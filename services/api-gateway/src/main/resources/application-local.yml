@@ -1,0 +1,65 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: http://localhost:8088
+          predicates:
+            - Path=/api/v1/auth/**
+        - id: user-service-candidates
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/candidates/**
+        - id: user-service-recruiters
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/recruiters/**
+        - id: company-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/companies/**
+        - id: job-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/v1/jobs/**
+        - id: application-service
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/v1/applications/**
+        - id: notification-service
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/v1/notifications/**
+        - id: recommendation-service
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/v1/recommendations/**
+        - id: admin-users
+          uri: http://localhost:8088
+          predicates:
+            - Path=/api/v1/admin/users/**
+        - id: admin-companies
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/admin/companies/**
+        - id: admin-jobs
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/v1/admin/jobs/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: ${FRONTEND_URL:http://localhost:4200}
+            allowed-methods: GET,POST,PUT,DELETE,PATCH,OPTIONS
+            allowed-headers: "*"
+            exposed-headers: X-Correlation-ID
+            allow-credentials: true
+            max-age: 3600
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:your-256-bit-secret-key-change-in-production-minimum-32-chars}
